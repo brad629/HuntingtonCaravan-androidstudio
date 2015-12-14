@@ -203,6 +203,11 @@ public class CaravanView extends View {
 					screenH-scaledCardH-redPaint.getTextSize()-(scale),
 					null);
 		}
+		else{
+			canvas.drawBitmap(back2, (screenW/2)+300,
+					screenH-scaledCardH-redPaint.getTextSize()-(scale),
+					null);
+		}
 		//if hand goes off the screen
 		if (myHand.size() > 8) {
 			canvas.drawBitmap(nextCardButton,
@@ -423,8 +428,8 @@ public class CaravanView extends View {
 				// on Caravan click asks to remove the caravan
 				if (myTurn) {
 					if (
-							x > (Caravan1X - (100 * scale)) &&
-							x < (Caravan1X + (100 * scale)) &&
+							x > ((screenW/2)+300 - (100 * scale)) &&
+							x < ((screenW/2)+300 + (100 * scale)) &&
 							y > (myCaravanY) &&
 							y < (myCaravanY + (150 * scale))
 							) {
@@ -519,13 +524,23 @@ public class CaravanView extends View {
 					//checking what caravan the user is trying to make a play on
 					//#1
 					//System.out.println(((screenW/2)-(screenW/4)-emptycaravan.getWidth())-(100*scale));
-					//System.out.println(x);
-					//System.out.println(y);
+					System.out.println(x);
+					System.out.println(y);
 					if((movingCardIdx>-1) && myHand.get(movingCardIdx).getScoreValue()==0){
 						movingCardIdx = -1;
 						break;
 					}
+					if (movingCardIdx > -1 &&
+							x > (700) &&
+							y > 950
+							) {
+						myDiscardPile.add(myHand.get(movingCardIdx));
+						myHand.remove(movingCardIdx);
+						myDrawCard(myHand);
+						myTurn=false;
+						makeComputerPlay();
 
+					}
 					if (movingCardIdx > -1 &&
 							x > (Caravan1X - (100 * scale)) &&
 							x < (Caravan1X + (100 * scale)) &&
@@ -1359,16 +1374,16 @@ public class CaravanView extends View {
 	}
 	private void oppDrawCard(List<Card> handToDraw) {
 		handToDraw.add(0, oppDeck.get(0));
-		oppDeck.remove(0);
-		if (oppDeck.isEmpty()) {
-			for (int i = oppDiscardPile.size()-1; i > 0 ; i--) {
-				oppDeck.add(oppDiscardPile.get(i));
-				oppDiscardPile.remove(i);
-
-				// Looks like this could be outside the loop
-				Collections.shuffle(oppDeck,new Random());
-			}
-		}
+		Collections.shuffle(oppDeck, new Random());
+		//if (oppDeck.isEmpty()) {
+//			for (int i = oppDiscardPile.size()-1; i > 0 ; i--) {
+//				oppDeck.add(oppDiscardPile.get(i));
+//				oppDiscardPile.remove(i);
+//
+//				// Looks like this could be outside the loop
+//				Collections.shuffle(oppDeck,new Random());
+//			}
+//		}
 	}
 	private void myInitCards() {
 		for (int i = 0; i < 4; i++) {
