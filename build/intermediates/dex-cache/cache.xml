@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\Bradley\AppData\Local\Android\sdk1\extras\android\m2repository\com\android\support\support-v4\19.1.0\support-v4-19.1.0.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67">
+        <dex dex="C:\Users\Bradley\OneDrive\Gamedesign\HuntingtonCaravan-androidstudio v2\HuntingtonCaravan-androidstudio\app\build\intermediates\pre-dexed\debug\support-v4-19.1.0-d53aadb4b216c582ee77e8676ef7e03e0c83a003.jar" />
+    </item>
+
+</items>
