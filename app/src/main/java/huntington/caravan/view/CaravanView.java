@@ -834,7 +834,8 @@ public class CaravanView extends View {
 			rank = rank+oppCaravanC.get(i).getScoreValue();
 		}
 		oppcaravanC_rank=rank+bonusCaravanF;
-
+		oppWinningCaravans=0;
+		userWinningCaravans=0;
 		if(oppcaravanA_rank>20&&oppcaravanA_rank<27&&oppcaravanA_rank>userCaravanA_rank){
 			oppWinningCaravans=oppWinningCaravans+1;
 		}

@@ -81,6 +81,9 @@ public class ComputerPlayer {
                 if (list.size() <= 1) {
                     for (int i = 0; i < computerhand.size(); i++) {
                         if (computerhand.get(i).getScoreValue() + oppCaravansRanks.get(rankIndex) < 27 && computerhand.get(i).getScoreValue() != 0) {
+                            if(list.get(0).getScoreValue()==computerhand.get(i).getScoreValue()){
+                                continue;
+                            }
                             list.add(0,computerhand.get(i));
                             computerhand.remove(i);
                             played = true;
@@ -189,9 +192,9 @@ public class ComputerPlayer {
 
 
                     }
-                    else{
-                        rankIndex=rankIndex+1;
-                    }
+//                    else{
+//                        rankIndex=rankIndex+1;
+//                    }
 
                 }
 
