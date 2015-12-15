@@ -17,6 +17,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.view.MotionEvent;
 import android.view.View;
@@ -44,6 +45,8 @@ import java.util.Random;
  */
 public class CaravanView extends View {
 	String text="";
+	boolean startSound=true;
+	public boolean soundOn=true;
 	int userWinningCaravans=0;
 	int oppWinningCaravans=0;
 	int turncounter=0;
@@ -106,6 +109,7 @@ public class CaravanView extends View {
 	private float scale;
 
 	//Bit Maps
+
 	private Bitmap back1;
 	private Bitmap back2;
 	private Bitmap back3;
@@ -118,6 +122,9 @@ public class CaravanView extends View {
 	private Context myContext;
 	private static SoundPool sounds;
 	private int dropSound;
+	private int yeahSound;
+	private int evillaf;
+	private int trap;
 	private Boolean arrived=true;
 	private Point dest = new Point(100,100);
 	private Point pos = new Point(100,100);
@@ -146,6 +153,8 @@ public class CaravanView extends View {
 		dropSound = sounds.load(myContext, huntington.caravan.R.raw.blip2, 1);
 
 
+
+
 	}
 	@Override
 	public void onSizeChanged (int w, int h, int oldw, int oldh) {
@@ -167,9 +176,12 @@ public class CaravanView extends View {
 		oppInitCards();
 		dealCards();
 
+
+
 	}
 
 	protected void onDraw(Canvas canvas) {
+
 		int value = 0;
 
 		canvas.drawBitmap(gameGraphic, 0, 0, null);
@@ -417,7 +429,7 @@ public class CaravanView extends View {
 
 
 	public boolean onTouchEvent(MotionEvent event) {
-		int value = 0;
+
 		int action = event.getAction();
 
 		int x = (int) event.getX();
@@ -428,20 +440,20 @@ public class CaravanView extends View {
 				// on Caravan click asks to remove the caravan
 				if (myTurn) {
 					if (
-							x > ((screenW/2)+300 - (100 * scale)) &&
-							x < ((screenW/2)+300 + (100 * scale)) &&
+							x > (59) &&
+							x < (231) &&
 							y > (myCaravanY) &&
 							y < (myCaravanY + (150 * scale))
 							) {
-						if (!(userCaravanA.isEmpty())) {
+
 							showDeleteCaravanDialog(userCaravanA, userCaravanAFaceCards, userCaravanAFaceCardsIndex);
 
 							break;
-						}
+
 					}
 					else if (
-							x > (Caravan2X - (100 * scale)) &&
-							x < (Caravan2X + (100 * scale)) &&
+							x > (310) &&
+							x < (510) &&
 							y > (myCaravanY) &&
 							y < (myCaravanY + (150 * scale))
 							) {
@@ -450,8 +462,8 @@ public class CaravanView extends View {
 						break;
 					}
 					else if (
-							x > (Caravan3X - (100 * scale)) &&
-							x < (Caravan3X + (100 * scale)) &&
+							x > (540) &&
+							x < (734) &&
 							y > (myCaravanY) &&
 							y < (myCaravanY + (150 * scale))
 							) {
@@ -461,7 +473,7 @@ public class CaravanView extends View {
 					}
 
 
-
+					//set movingcardidx
 					for (int i = 0; i < 8; i++) {
 						if (x > i * (scaledCardW + 1) && x < i * (scaledCardW + 1) + scaledCardW &&
 								y > screenH - scaledCardH - redPaint.getTextSize() - (100 * scale)) {
@@ -474,6 +486,7 @@ public class CaravanView extends View {
 									break;
 
 								}
+								//if caravans are empty draw place holders
 								if(!userCaravanA.isEmpty()){
 									card_list.add("Caravan A:" + userCaravanA.get(userCaravanA.size()-1).getName());
 								}
@@ -530,6 +543,7 @@ public class CaravanView extends View {
 						movingCardIdx = -1;
 						break;
 					}
+					//these if statements check to see where the card was dropped
 					if (movingCardIdx > -1 &&
 							x > (700) &&
 							y > 950
@@ -537,6 +551,13 @@ public class CaravanView extends View {
 						myDiscardPile.add(myHand.get(movingCardIdx));
 						myHand.remove(movingCardIdx);
 						myDrawCard(myHand);
+//						if(CaravanActivity.soundEnabled) {
+//							AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+//							float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+//							sounds.play(dropSound, volume, volume, 1, 0, 1);
+//
+//
+//						}
 						myTurn=false;
 						makeComputerPlay();
 
@@ -621,7 +642,13 @@ public class CaravanView extends View {
 
 								myHand.remove(movingCardIdx);
 								myDrawCard(myHand);
-
+//								if(CaravanActivity.soundEnabled) {
+//									AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+//									float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+//									sounds.play(dropSound, volume, volume, 1, 0, 1);
+//
+//
+//								}
 
 								calculateScore();
 								myTurn = false;
@@ -636,7 +663,13 @@ public class CaravanView extends View {
 								myHand.remove(movingCardIdx);
 								myDrawCard(myHand);
 
-
+//								if(CaravanActivity.soundEnabled) {
+//									AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+//									float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+//									sounds.play(dropSound, volume, volume, 1, 0, 1);
+//
+//
+//								}
 								calculateScore();
 								myTurn = false;
 								calculateScore();
@@ -654,7 +687,13 @@ public class CaravanView extends View {
 							}
 							myHand.remove(movingCardIdx);
 							myDrawCard(myHand);
-
+//							if(CaravanActivity.soundEnabled) {
+//								AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+//								float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+//								sounds.play(dropSound, volume, volume, 1, 0, 1);
+//
+//
+//							}
 
 							myTurn = false;
 							calculateScore();
@@ -690,7 +729,13 @@ public class CaravanView extends View {
 								userCaravanB.add(0, myHand.get(movingCardIdx));
 								myHand.remove(movingCardIdx);
 								myDrawCard(myHand);
-
+//								if(CaravanActivity.soundEnabled) {
+//									AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+//									float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+//									sounds.play(dropSound, volume, volume, 1, 0, 1);
+//
+//
+//								}
 
 								myTurn = false;
 								calculateScore();
@@ -702,7 +747,13 @@ public class CaravanView extends View {
 								myHand.remove(movingCardIdx);
 								myDrawCard(myHand);
 
-
+//								if(CaravanActivity.soundEnabled) {
+//									AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+//									float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+//									sounds.play(dropSound, volume, volume, 1, 0, 1);
+//
+//
+//								}
 								myTurn = false;
 								calculateScore();
 								makeComputerPlay();
@@ -717,7 +768,13 @@ public class CaravanView extends View {
 							myHand.remove(movingCardIdx);
 							myDrawCard(myHand);
 
-
+//							if(CaravanActivity.soundEnabled) {
+//								AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+//								float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+//								sounds.play(dropSound, volume, volume, 1, 0, 1);
+//
+//
+//							}
 							myTurn = false;
 							calculateScore();
 							makeComputerPlay();
@@ -753,7 +810,13 @@ public class CaravanView extends View {
 								myHand.remove(movingCardIdx);
 								myDrawCard(myHand);
 
-
+//								if(CaravanActivity.soundEnabled) {
+//									AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+//									float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+//									sounds.play(dropSound, volume, volume, 1, 0, 1);
+//
+//
+//								}
 								myTurn = false;
 								calculateScore();
 								makeComputerPlay();
@@ -765,7 +828,13 @@ public class CaravanView extends View {
 								myHand.remove(movingCardIdx);
 								myDrawCard(myHand);
 
-
+//								if(CaravanActivity.soundEnabled) {
+//									AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+//									float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+//									sounds.play(dropSound, volume, volume, 1, 0, 1);
+//
+//
+//								}
 								myTurn = false;
 								calculateScore();
 								makeComputerPlay();
@@ -779,7 +848,13 @@ public class CaravanView extends View {
 							userCaravanC.add(0, myHand.get(movingCardIdx));
 							myHand.remove(movingCardIdx);
 							myDrawCard(myHand);
-
+//							if(CaravanActivity.soundEnabled) {
+//								AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+//								float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+//								sounds.play(dropSound, volume, volume, 1, 0, 1);
+//
+//
+//							}
 
 							myTurn = false;
 							calculateScore();
@@ -846,13 +921,13 @@ public class CaravanView extends View {
 			oppWinningCaravans=oppWinningCaravans+1;
 		}
 		if(userCaravanA_rank>20&&userCaravanA_rank<27&&userCaravanA_rank>oppcaravanA_rank){
-			userWinningCaravans=oppWinningCaravans+1;
+			userWinningCaravans=userWinningCaravans+1;
 		}
 		if(usercaravanB_rank>20&&usercaravanB_rank<27&&usercaravanB_rank>oppcaravanB_rank){
-			userWinningCaravans=oppWinningCaravans+1;
+			userWinningCaravans=userWinningCaravans+1;
 		}
 		if(usercaravanC_rank>20&&usercaravanC_rank<27&&usercaravanC_rank>oppcaravanC_rank){
-			userWinningCaravans=oppWinningCaravans+1;
+			userWinningCaravans=userWinningCaravans+1;
 		}
 		if(userWinningCaravans>=2||oppWinningCaravans>=2){
 			System.out.println("FARTS");
@@ -877,6 +952,7 @@ public class CaravanView extends View {
 						faceCards.clear();
 						faceIndexValue.clear();
 						calculateScore();
+
 						myTurn=false;
 						makeComputerPlay();
 						break;
@@ -923,21 +999,25 @@ public class CaravanView extends View {
 				.setNegativeButton("No", dialogClickListener).show();
 	}
 
+
+
+//choose a card to play the face card on
 	private void showChooseCardDialog(final int amovingCardIdx, final int cardrank) {
-
-
 		final Dialog choosecardDialog = new Dialog(myContext);
 		choosecardDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		choosecardDialog.setContentView(R.layout.make_move);
 		final TextView tv = (TextView)findViewById(R.id.chooseCardText);
+		//change messege for played card
 		if (cardrank==11){
 			Toast directions = Toast.makeText(myContext, "Select a card to remove from the table.", Toast.LENGTH_LONG);
 			directions.show();
 		}
+
 		else if (cardrank==12){
 			Toast directions = Toast.makeText(myContext, "Select a card to decrease its value by half.", Toast.LENGTH_LONG);
 			directions.show();
 		}
+
 		else if (cardrank==13){
 			Toast directions = Toast.makeText(myContext, "Select a card to double the vale.", Toast.LENGTH_LONG);
 			directions.show();
@@ -968,6 +1048,7 @@ public class CaravanView extends View {
 				String[] sep = results.split(":");
 				//System.out.println(sep[0]);
 				//if card selected is a jack
+				//parse results to decide what face card action to take
 				if (cardrank == 11) {
 					if (sep[0].equals("Caravan A")) {
 						if (userCaravanAFaceCards.size() != 0) {
@@ -979,6 +1060,13 @@ public class CaravanView extends View {
 
 						myHand.remove(amovingCardIdx);
 						myDrawCard(myHand);
+						if(CaravanActivity.soundEnabled) {
+							AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+							float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+							sounds.play(dropSound, volume, volume, 1, 0, 1);
+
+
+						}
 						myTurn = false;
 						calculateScore();
 						makeComputerPlay();
@@ -994,6 +1082,13 @@ public class CaravanView extends View {
 						userCaravanB.remove(userCaravanB.size() - 1);
 
 						myHand.remove(amovingCardIdx);
+						if(CaravanActivity.soundEnabled) {
+							AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+							float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+							sounds.play(dropSound, volume, volume, 1, 0, 1);
+
+
+						}
 						myDrawCard(myHand);
 						myTurn = false;
 						calculateScore();
@@ -1013,6 +1108,13 @@ public class CaravanView extends View {
 						myHand.remove(amovingCardIdx);
 						myDrawCard(myHand);
 						myTurn = false;
+						if(CaravanActivity.soundEnabled) {
+							AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+							float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+							sounds.play(dropSound, volume, volume, 1, 0, 1);
+
+
+						}
 						calculateScore();
 						makeComputerPlay();
 						choosecardDialog.dismiss();
@@ -1029,6 +1131,13 @@ public class CaravanView extends View {
 
 						myHand.remove(amovingCardIdx);
 						myDrawCard(myHand);
+						if(CaravanActivity.soundEnabled) {
+							AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+							float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+							sounds.play(dropSound, volume, volume, 1, 0, 1);
+
+
+						}
 						myTurn = false;
 						calculateScore();
 						makeComputerPlay();
@@ -1046,6 +1155,13 @@ public class CaravanView extends View {
 
 						myHand.remove(amovingCardIdx);
 						myDrawCard(myHand);
+						if(CaravanActivity.soundEnabled) {
+							AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+							float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+							sounds.play(dropSound, volume, volume, 1, 0, 1);
+
+
+						}
 						myTurn = false;
 						calculateScore();
 						makeComputerPlay();
@@ -1063,6 +1179,13 @@ public class CaravanView extends View {
 
 						myHand.remove(amovingCardIdx);
 						myDrawCard(myHand);
+						if(CaravanActivity.soundEnabled) {
+							AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+							float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+							sounds.play(dropSound, volume, volume, 1, 0, 1);
+
+
+						}
 						myTurn = false;
 						calculateScore();
 						makeComputerPlay();
@@ -1083,6 +1206,13 @@ public class CaravanView extends View {
 							userCaravanAFaceCards.add(myHand.get(amovingCardIdx));
 							bonusCaravanA=bonusCaravanA-(userCaravanA.get(userCaravanA.size()-1).getScoreValue()/2);
 							myHand.remove(amovingCardIdx);
+							if(CaravanActivity.soundEnabled) {
+								AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+								float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+								sounds.play(dropSound, volume, volume, 1, 0, 1);
+
+
+							}
 							myDrawCard(myHand);
 							myTurn = false;
 							calculateScore();
@@ -1104,6 +1234,13 @@ public class CaravanView extends View {
 							userCaravanBFaceCards.add(myHand.get(amovingCardIdx));
 							bonusCaravanB=bonusCaravanB-(userCaravanB.get(userCaravanB.size()-1).getScoreValue()/2);
 							myHand.remove(amovingCardIdx);
+							if(CaravanActivity.soundEnabled) {
+								AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+								float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+								sounds.play(dropSound, volume, volume, 1, 0, 1);
+
+
+							}
 							myDrawCard(myHand);
 							myTurn = false;
 							calculateScore();
@@ -1122,6 +1259,13 @@ public class CaravanView extends View {
 							userCaravanCFaceCards.add(myHand.get(amovingCardIdx));
 							bonusCaravanC=bonusCaravanC-(userCaravanC.get(userCaravanC.size()-1).getScoreValue()/2);
 							myHand.remove(amovingCardIdx);
+							if(CaravanActivity.soundEnabled) {
+								AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+								float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+								sounds.play(dropSound, volume, volume, 1, 0, 1);
+
+
+							}
 							myDrawCard(myHand);
 							myTurn = false;
 							calculateScore();
@@ -1140,6 +1284,13 @@ public class CaravanView extends View {
 							bonusCaravanD = bonusCaravanD - (oppCaravanA.get(oppCaravanA.size() - 1).getScoreValue() / 2);
 							myHand.remove(amovingCardIdx);
 							myDrawCard(myHand);
+							if(CaravanActivity.soundEnabled) {
+								AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+								float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+								sounds.play(dropSound, volume, volume, 1, 0, 1);
+
+
+							}
 							myTurn = false;
 							calculateScore();
 							makeComputerPlay();
@@ -1157,6 +1308,13 @@ public class CaravanView extends View {
 							bonusCaravanE = bonusCaravanE - (oppCaravanB.get(oppCaravanB.size() - 1).getScoreValue() / 2);
 							myHand.remove(amovingCardIdx);
 							myDrawCard(myHand);
+							if(CaravanActivity.soundEnabled) {
+								AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+								float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+								sounds.play(dropSound, volume, volume, 1, 0, 1);
+
+
+							}
 							myTurn = false;
 							calculateScore();
 							makeComputerPlay();
@@ -1174,6 +1332,13 @@ public class CaravanView extends View {
 							bonusCaravanF = bonusCaravanF - (oppCaravanC.get(oppCaravanC.size() - 1).getScoreValue() / 2);
 							myHand.remove(amovingCardIdx);
 							myDrawCard(myHand);
+							if(CaravanActivity.soundEnabled) {
+								AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+								float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+								sounds.play(dropSound, volume, volume, 1, 0, 1);
+
+
+							}
 							myTurn = false;
 							calculateScore();
 							makeComputerPlay();
@@ -1194,6 +1359,13 @@ public class CaravanView extends View {
 							bonusCaravanA=bonusCaravanA+(userCaravanA.get(userCaravanA.size() - 1).getScoreValue());
 							myHand.remove(amovingCardIdx);
 							myDrawCard(myHand);
+							if(CaravanActivity.soundEnabled) {
+								AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+								float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+								sounds.play(dropSound, volume, volume, 1, 0, 1);
+
+
+							}
 							myTurn = false;
 							calculateScore();
 							makeComputerPlay();
@@ -1212,6 +1384,13 @@ public class CaravanView extends View {
 							bonusCaravanB=bonusCaravanB+(userCaravanB.get(userCaravanB.size() - 1).getScoreValue());
 							myHand.remove(amovingCardIdx);
 							myDrawCard(myHand);
+							if(CaravanActivity.soundEnabled) {
+								AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+								float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+								sounds.play(dropSound, volume, volume, 1, 0, 1);
+
+
+							}
 							myTurn = false;
 							calculateScore();
 							makeComputerPlay();
@@ -1230,6 +1409,13 @@ public class CaravanView extends View {
 							bonusCaravanC=bonusCaravanC+(userCaravanC.get(userCaravanC.size() - 1).getScoreValue());
 							myHand.remove(amovingCardIdx);
 							myDrawCard(myHand);
+							if(CaravanActivity.soundEnabled) {
+								AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+								float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+								sounds.play(dropSound, volume, volume, 1, 0, 1);
+
+
+							}
 							myTurn = false;
 							calculateScore();
 							makeComputerPlay();
@@ -1248,6 +1434,13 @@ public class CaravanView extends View {
 							bonusCaravanD=bonusCaravanD+(oppCaravanA.get(oppCaravanA.size() - 1).getScoreValue());
 							myHand.remove(amovingCardIdx);
 							myDrawCard(myHand);
+							if(CaravanActivity.soundEnabled) {
+								AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+								float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+								sounds.play(dropSound, volume, volume, 1, 0, 1);
+
+
+							}
 							myTurn = false;
 							calculateScore();
 							makeComputerPlay();
@@ -1266,6 +1459,13 @@ public class CaravanView extends View {
 							bonusCaravanE=bonusCaravanE+(oppCaravanB.get(oppCaravanB.size() - 1).getScoreValue());
 							myHand.remove(amovingCardIdx);
 							myDrawCard(myHand);
+							if(CaravanActivity.soundEnabled) {
+								AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+								float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+								sounds.play(dropSound, volume, volume, 1, 0, 1);
+
+
+							}
 							myTurn = false;
 							calculateScore();
 							makeComputerPlay();
@@ -1284,6 +1484,13 @@ public class CaravanView extends View {
 							bonusCaravanF=bonusCaravanF+(oppCaravanC.get(oppCaravanC.size() - 1).getScoreValue());
 							myHand.remove(amovingCardIdx);
 							myDrawCard(myHand);
+							if(CaravanActivity.soundEnabled) {
+								AudioManager audioManager = (AudioManager) myContext.getSystemService(Context.AUDIO_SERVICE);
+								float volume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+								sounds.play(dropSound, volume, volume, 1, 0, 1);
+
+
+							}
 							myTurn = false;
 							calculateScore();
 							makeComputerPlay();
@@ -1314,34 +1521,8 @@ public class CaravanView extends View {
 		String tempPlay=" ";
 
 		calculateScore();
-		ComputerPlayer.makePlay(oppHand, oppCaravanA, oppCaravanB, oppCaravanC, userCaravanA, userCaravanB, userCaravanC,userCaravanA_rank,usercaravanB_rank,usercaravanC_rank,oppcaravanA_rank,oppcaravanB_rank,oppcaravanC_rank,userCaravanAFaceCards,userCaravanBFaceCards,userCaravanCFaceCards,oppCaravanAFaceCards,oppCaravanBFaceCards,oppCaravanCFaceCards,oppDiscardPile);
-//			String[] sep = tempPlay.split(",");
-//			oppHand.remove(Integer.parseInt(sep[0]));
-//			//opp caravans
-//			if (Integer.parseInt(sep[1])==0){
-//				if(Integer.parseInt(sep[2])==1){
-//					oppCaravanA.add(0,oppHand.get(Integer.parseInt(sep[0])));
-//
-//
-//				}
-//				else if(Integer.parseInt(sep[2])==2){
-//					oppCaravanB.add(0,oppHand.get(Integer.parseInt(sep[0])));
-//
-//
-//
-//				}
-//				else if(Integer.parseInt(sep[2])==3){
-//					oppCaravanC.add(0,oppHand.get(Integer.parseInt(sep[0])));
-//
-//
-//
-//				}
-//
-//
-//			}
-//			else{
-//				//attack user caravans
-//			}
+		ComputerPlayer.makePlay(oppHand, oppCaravanA, oppCaravanB, oppCaravanC, userCaravanA, userCaravanB, userCaravanC,userCaravanA_rank,usercaravanB_rank,usercaravanC_rank,oppcaravanA_rank,oppcaravanB_rank,oppcaravanC_rank,userCaravanAFaceCards,userCaravanBFaceCards,userCaravanCFaceCards,oppCaravanAFaceCards,oppCaravanBFaceCards,oppCaravanCFaceCards,oppDiscardPile,bonusCaravanD,bonusCaravanE,bonusCaravanF);
+
 			oppDrawCard(oppHand);
 			//System.out.println("the computer played: "+tempPlay);
 			myTurn=true;
@@ -1360,9 +1541,11 @@ public class CaravanView extends View {
 	}
 
 	private void myDrawCard(List<Card> handToDraw) {
-		handToDraw.add(0, myDeck.get(0));
-		//random cards to simulate makeshift deck
-		Collections.shuffle(myDeck, new Random());
+
+			handToDraw.add(0, myDeck.get(0));
+			//random cards to simulate makeshift deck
+			Collections.shuffle(myDeck, new Random());
+		}
 //		if (myDeck.isEmpty()) {
 //			for (int i = myDiscardPile.size()-1; i > 0 ; i--) {
 //				myDeck.add(myDiscardPile.get(i));
@@ -1372,7 +1555,7 @@ public class CaravanView extends View {
 //				Collections.shuffle(myDeck,new Random());
 //			}
 
-	}
+
 	private void oppDrawCard(List<Card> handToDraw) {
 		handToDraw.add(0, oppDeck.get(0));
 		Collections.shuffle(oppDeck, new Random());

@@ -21,17 +21,22 @@ public class ComputerPlayer {
     private static List<List<Card>> oppCaravanFaceList = new ArrayList();
     private static List<Integer> oppCaravansRanks = new ArrayList();
     private static List<Integer> userCaravansRanks = new ArrayList();
+    private static List<Integer> bonusValues= new ArrayList();
     static boolean played = false;
 
     int caravan1 = 0;
 
-    public static void makePlay(List<Card> computerhand, List<Card> oppCaravan1, List<Card> oppCaravan2, List<Card> oppCaravan3, List<Card> userCaravan1, List<Card> userCaravan2, List<Card> userCaravan3, int userCaravanARank, int userCaravanBRank, int userCaravanCRank, int oppCaravanARank, int oppCaravanBRank, int oppCaravanCRank, List<Card> userCaravanAFaceCards, List<Card> userCaravanBFaceCards, List<Card> userCaravanCFaceCards, List<Card> oppCaravanAFaceCards, List<Card> oppCaravanBFaceCards, List<Card> oppCaravanCFaceCards,List<Card>discard) {
+    public static void makePlay(List<Card> computerhand, List<Card> oppCaravan1, List<Card> oppCaravan2, List<Card> oppCaravan3, List<Card> userCaravan1, List<Card> userCaravan2, List<Card> userCaravan3, int userCaravanARank, int userCaravanBRank, int userCaravanCRank, int oppCaravanARank, int oppCaravanBRank, int oppCaravanCRank, List<Card> userCaravanAFaceCards, List<Card> userCaravanBFaceCards, List<Card> userCaravanCFaceCards, List<Card> oppCaravanAFaceCards, List<Card> oppCaravanBFaceCards, List<Card> oppCaravanCFaceCards,List<Card>discard,int bonuscaravanD,int bonuscaravanE, int bonuscaravanF) {
         boolean played = false;
         int counter = 0;
         oppCaravans.clear();
         oppCaravansRanks.clear();
         oppCaravanFaceList.clear();
         userCaravansRanks.clear();
+        bonusValues.clear();
+        bonusValues.add(bonuscaravanD);
+        bonusValues.add(bonuscaravanE);
+        bonusValues.add(bonuscaravanF);
         oppCaravanFaceList.add(oppCaravanAFaceCards);
         oppCaravanFaceList.add(oppCaravanBFaceCards);
         oppCaravanFaceList.add(oppCaravanCFaceCards);
@@ -77,7 +82,7 @@ public class ComputerPlayer {
             if(played){
                 break;
             }
-            if(oppCaravansRanks.get(rankIndex)<20&&!played) {
+            if(oppCaravansRanks.get(rankIndex)<=20) {
                 if (list.size() <= 1) {
                     for (int i = 0; i < computerhand.size(); i++) {
                         if (computerhand.get(i).getScoreValue() + oppCaravansRanks.get(rankIndex) < 27 && computerhand.get(i).getScoreValue() != 0) {
@@ -96,11 +101,21 @@ public class ComputerPlayer {
 
                 }
                 else {
+                    if (list.get(0).getRank()==10||list.get(0).getRank()==14) {
+                        played = true;
+                        list.clear();
+                        break;
+                    }
 
                     for (int i = 0; i < computerhand.size(); i++) {
                         if (list.get(1).getScoreValue() - list.get(0).getScoreValue() > 0 && list.get(0).getScoreValue() - computerhand.get(i).getScoreValue() > 0) {
+                            if (oppCaravansRanks.get(rankIndex) > 17 && list.get(0).getRank() >= 9 && list.get(0).getRank() != 14) {
+                                played = true;
+                                list.clear();
+                                break;
+                            }
                             if (computerhand.get(i).getScoreValue() + oppCaravansRanks.get(rankIndex) < 27 && computerhand.get(i).getScoreValue() != 0) {
-                                list.add(0,computerhand.get(i));
+                                list.add(0, computerhand.get(i));
                                 computerhand.remove(i);
 
                                 played = true;
@@ -108,9 +123,14 @@ public class ComputerPlayer {
                             }
 
                         }
-                        else if(list.get(1).getScoreValue() - list.get(0).getScoreValue() < 0 && list.get(0).getScoreValue() - computerhand.get(i).getScoreValue() < 0) {
+                        else if (list.get(1).getScoreValue() - list.get(0).getScoreValue() < 0 && list.get(0).getScoreValue() - computerhand.get(i).getScoreValue() < 0) {
+                            if (oppCaravansRanks.get(rankIndex) < 15 && list.get(0).getRank() <= 3) {
+                                played = true;
+                                list.clear();
+                                break;
+                            }
                             if (computerhand.get(i).getScoreValue() + oppCaravansRanks.get(rankIndex) < 27 && computerhand.get(i).getScoreValue() != 0) {
-                                list.add(0,computerhand.get(i));
+                                list.add(0, computerhand.get(i));
                                 computerhand.remove(i);
 
                                 played = true;
@@ -171,11 +191,12 @@ public class ComputerPlayer {
             if(played){
                 break;
             }
-            if (oppCaravansRanks.get(rankIndex) > 27 && !played) {
+            if (oppCaravansRanks.get(rankIndex) > 27) {
                 for (int i = 0; i < computerhand.size(); i++) {
                     if (oppCaravanFaceList.get(rankIndex).size() == 0) {
 
                         if (computerhand.get(i).getRank() == 12) {
+                            bonusValues.add(rankIndex,-(1/2*list.get(0).getScoreValue()));
                             oppCaravanFaceList.get(rankIndex).add(computerhand.get(i));
                             computerhand.remove(i);
 
@@ -191,6 +212,11 @@ public class ComputerPlayer {
                         break;
 
 
+                    }
+                    else{
+                        list.clear();
+                        played=true;
+                        break;
                     }
 //                    else{
 //                        rankIndex=rankIndex+1;
@@ -209,9 +235,11 @@ public class ComputerPlayer {
             if(played){
                 break;
             }
-            if(oppCaravansRanks.get(rankIndex)<21&&list.get(0).getScoreValue()==1||list.get(0).getScoreValue()==10){
+            if(oppCaravansRanks.get(rankIndex)<21&&(list.get(0).getScoreValue()==1||list.get(0).getScoreValue()==10)){
                 for (int i = 0; i < computerhand.size(); i++) {
-                    if(computerhand.get(i).getRank()==10&&oppCaravansRanks.get(rankIndex)+computerhand.get(i).getScoreValue()<27){
+                    if(oppCaravansRanks.get(rankIndex)+computerhand.get(i).getScoreValue()<27&&computerhand.get(i).getRank()==13){
+                        //trying to figure out bonus balues
+                        bonusValues.add(rankIndex,(2*list.get(0).getScoreValue()));
                         oppCaravanFaceList.get(rankIndex).add(computerhand.get(i));
                         played=true;
                     }

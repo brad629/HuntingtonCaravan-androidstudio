@@ -94,10 +94,13 @@ public final class R {
         public static final int make_move=0x7f030001;
     }
     public static final class menu {
-        public static final int crazy_eights=0x7f080000;
+        public static final int caravan=0x7f080000;
     }
     public static final class raw {
-        public static final int blip2=0x7f040000;
+        public static final int austin_yeahbaby_converted=0x7f040000;
+        public static final int blip2=0x7f040001;
+        public static final int evil_laf=0x7f040002;
+        public static final int trap=0x7f040003;
     }
     public static final class string {
         public static final int action_settings=0x7f070000;
