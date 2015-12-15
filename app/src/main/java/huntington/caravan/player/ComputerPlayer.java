@@ -76,7 +76,7 @@ public class ComputerPlayer {
 
 
         }
-        //check if caravan < 20
+        //check if caravan < 20 and if it can make a play or not
         rankIndex=0;
         for(List<Card> list : oppCaravans){
             if(played){
@@ -187,6 +187,7 @@ public class ComputerPlayer {
 
         }
         rankIndex=0;
+        //if its greater than 27 try and play a queen or discard caravan
         for(List<Card>list:oppCaravans) {
             if(played){
                 break;

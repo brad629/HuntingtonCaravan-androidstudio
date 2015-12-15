@@ -190,14 +190,14 @@ public class CaravanView extends View {
 		//draw opp hand
 		for (int i = 0; i < oppHand.size(); i++) {
 			//shows the opponent hand for debugging
-			canvas.drawBitmap(oppHand.get(i).getBitmap(),
-					i*(scaledCardW+1),
-					redPaint.getTextSize()+(100*scale),
-					null);
-//			canvas.drawBitmap(back1,
-//					i*(scale+back1.getWidth()),
+//			canvas.drawBitmap(oppHand.get(i).getBitmap(),
+//					i*(scaledCardW+1),
 //					redPaint.getTextSize()+(100*scale),
 //					null);
+			canvas.drawBitmap(back1,
+					i*(scale+back1.getWidth()),
+					redPaint.getTextSize()+(100*scale),
+					null);
 		}
 		// Simulate the card decks
 		canvas.drawBitmap(back1, (screenW/2)-back1.getWidth()-300, redPaint.getTextSize()+(scale), null);
@@ -930,7 +930,6 @@ public class CaravanView extends View {
 			userWinningCaravans=userWinningCaravans+1;
 		}
 		if(userWinningCaravans>=2||oppWinningCaravans>=2){
-			System.out.println("FARTS");
 			showPlayAgainDialog(userWinningCaravans,oppWinningCaravans);
 		}
 
