@@ -1,6 +1,7 @@
 package huntington.caravan.view;
 
 import huntington.caravan.R;
+import huntington.caravan.activity.CaravanActivity;
 import huntington.caravan.activity.GameActivity;
 
 import android.annotation.TargetApi;
@@ -12,6 +13,7 @@ import android.graphics.Canvas;
 import android.os.Build;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 public class TitleView extends View {
 	private Bitmap caravanTitle;
@@ -90,7 +92,14 @@ public class TitleView extends View {
 
 				break;
 			case MotionEvent.ACTION_UP:
-				if (playButtonPressed) {
+				if (playButtonPressed&& !CaravanActivity.interactiveEnabled) {
+					String hi = "Please wait, zScore will show in the Android Studio logcat window";
+					Toast.makeText(myContext,hi,Toast.LENGTH_SHORT).show();
+					Intent gameIntent = new Intent(myContext, GameActivity.class);
+
+					myContext.startActivity(gameIntent);
+				}
+				else if(playButtonPressed){
 					Intent gameIntent = new Intent(myContext, GameActivity.class);
 
 					myContext.startActivity(gameIntent);

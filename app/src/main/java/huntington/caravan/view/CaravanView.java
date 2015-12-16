@@ -15,6 +15,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -36,6 +37,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import static android.support.v4.app.ActivityCompat.startActivity;
+
 /**
  * This class is the prototype of Crazy Eights.
  * The concept is from James (2013), although I made some small
@@ -44,6 +47,10 @@ import java.util.Random;
  *
  */
 public class CaravanView extends View {
+	boolean newgame = true;
+	int noninteractivegames = 0;
+	int cp1Wins=0;
+	int cp2Wins=0;
 	String text="";
 	boolean startSound=true;
 	public boolean soundOn=true;
@@ -133,6 +140,7 @@ public class CaravanView extends View {
 	private int movingX;
 	private int movingY;
 
+
 	public CaravanView(Context context) {
 		super(context);
 		myContext = context;
@@ -146,6 +154,41 @@ public class CaravanView extends View {
 		gameGraphic = BitmapFactory.decodeResource(getResources(), R.drawable.play_screen);
 
 		sound = false;
+		if(!CaravanActivity.interactiveEnabled){
+
+
+			noninteractivegames=0;
+			while(noninteractivegames<1000){
+				if(newgame=true){
+					myInitCards();
+					oppInitCards();
+					dealCards();
+					myDrawCard(oppCaravanA);
+					myDrawCard(oppCaravanB);
+					myDrawCard(oppCaravanC);
+					myDrawCard(userCaravanA);
+					myDrawCard(userCaravanB);
+					myDrawCard(userCaravanC);
+					newgame=false;
+				}
+				ComputerPlayer.makePlay(oppHand, oppCaravanA, oppCaravanB, oppCaravanC, userCaravanA, userCaravanB, userCaravanC, userCaravanA_rank, usercaravanB_rank, usercaravanC_rank, oppcaravanA_rank, oppcaravanB_rank, oppcaravanC_rank, userCaravanAFaceCards, userCaravanBFaceCards, userCaravanCFaceCards, oppCaravanAFaceCards, oppCaravanBFaceCards, oppCaravanCFaceCards, oppDiscardPile, bonusCaravanD, bonusCaravanE, bonusCaravanF);
+				ComputerPlayer.makePlay(myHand, userCaravanA, userCaravanB, userCaravanC, oppCaravanA, oppCaravanB, oppCaravanC, oppcaravanA_rank, oppcaravanB_rank, oppcaravanC_rank, userCaravanA_rank, usercaravanB_rank, usercaravanC_rank, oppCaravanAFaceCards, oppCaravanBFaceCards, oppCaravanCFaceCards, userCaravanAFaceCards, userCaravanBFaceCards, userCaravanCFaceCards, myDiscardPile, bonusCaravanA, bonusCaravanB, bonusCaravanC);
+				oppDrawCard(oppHand);
+				myDrawCard(myHand);
+				//System.out.println("the computer played: "+tempPlay);
+				calculateScore();
+				System.out.println(cp1Wins);
+				System.out.println(cp2Wins);
+				if(noninteractivegames==1000){
+					double z = (cp1Wins - noninteractivegames/2)/Math.sqrt(noninteractivegames/2/2);
+					System.out.println("Zscore= "+z);
+				}
+
+			}
+
+
+			}
+
 
 
 		sounds = new SoundPool(5, AudioManager.STREAM_MUSIC,0);
@@ -537,8 +580,8 @@ public class CaravanView extends View {
 					//checking what caravan the user is trying to make a play on
 					//#1
 					//System.out.println(((screenW/2)-(screenW/4)-emptycaravan.getWidth())-(100*scale));
-					System.out.println(x);
-					System.out.println(y);
+					//System.out.println(x);
+					//System.out.println(y);
 					if((movingCardIdx>-1) && myHand.get(movingCardIdx).getScoreValue()==0){
 						movingCardIdx = -1;
 						break;
@@ -909,8 +952,7 @@ public class CaravanView extends View {
 			rank = rank+oppCaravanC.get(i).getScoreValue();
 		}
 		oppcaravanC_rank=rank+bonusCaravanF;
-		oppWinningCaravans=0;
-		userWinningCaravans=0;
+
 		if(oppcaravanA_rank>20&&oppcaravanA_rank<27&&oppcaravanA_rank>userCaravanA_rank){
 			oppWinningCaravans=oppWinningCaravans+1;
 		}
@@ -930,7 +972,47 @@ public class CaravanView extends View {
 			userWinningCaravans=userWinningCaravans+1;
 		}
 		if(userWinningCaravans>=2||oppWinningCaravans>=2){
-			showPlayAgainDialog(userWinningCaravans,oppWinningCaravans);
+			if(CaravanActivity.interactiveEnabled) {
+				showPlayAgainDialog(userWinningCaravans, oppWinningCaravans);
+			}
+			else if(!CaravanActivity.interactiveEnabled&& userWinningCaravans>=2){
+				newgame=true;
+				cp2Wins=cp2Wins+1;
+				noninteractivegames=noninteractivegames+1;
+				oppCaravanA.clear();
+				oppCaravanB.clear();
+				oppCaravanC.clear();
+				userCaravanA.clear();
+				userCaravanB.clear();
+				userCaravanC.clear();
+				oppcaravanA_rank=0;
+				oppcaravanC_rank=0;
+				oppcaravanB_rank=0;
+				userCaravanA_rank=0;
+				usercaravanB_rank=0;
+				usercaravanC_rank=0;
+				userWinningCaravans=0;
+				oppWinningCaravans=0;
+			}
+			else if(!CaravanActivity.interactiveEnabled&& oppWinningCaravans>=2){
+				newgame=true;
+				cp1Wins=cp1Wins+1;
+				noninteractivegames=noninteractivegames+1;
+				oppCaravanA.clear();
+				oppCaravanB.clear();
+				oppCaravanC.clear();
+				userCaravanA.clear();
+				userCaravanB.clear();
+				userCaravanC.clear();
+				oppcaravanA_rank=0;
+				oppcaravanC_rank=0;
+				oppcaravanB_rank=0;
+				userCaravanA_rank=0;
+				usercaravanB_rank=0;
+				usercaravanC_rank=0;
+				userWinningCaravans=0;
+				oppWinningCaravans=0;
+			}
 		}
 
 
@@ -1585,9 +1667,13 @@ public class CaravanView extends View {
 				Bitmap tempBitmap = BitmapFactory.decodeResource(myContext.getResources(), resourceId);
 				scaledCardW = (int) (screenW/8);
 				scaledCardH = (int) (scaledCardW*1.28);
-				Bitmap scaledBitmap = Bitmap.createScaledBitmap(tempBitmap, scaledCardW, scaledCardH, false);
-				tempCard.setBitmap(scaledBitmap);
-				myDeck.add(tempCard);
+				if(CaravanActivity.interactiveEnabled) {
+					Bitmap scaledBitmap = Bitmap.createScaledBitmap(tempBitmap, scaledCardW, scaledCardH, false);
+
+					tempCard.setBitmap(scaledBitmap);
+				}
+					myDeck.add(tempCard);
+
 			}
 		}
 	}
@@ -1608,10 +1694,15 @@ public class CaravanView extends View {
 				Bitmap tempBitmap = BitmapFactory.decodeResource(myContext.getResources(), resourceId);
 				scaledCardW = (int) (screenW/8);
 				scaledCardH = (int) (scaledCardW*1.28);
-				Bitmap scaledBitmap = Bitmap.createScaledBitmap(tempBitmap, scaledCardW, scaledCardH, false);
-				tempCard.setBitmap(scaledBitmap);
-				oppDeck.add(tempCard);
+				if(CaravanActivity.interactiveEnabled) {
+					Bitmap scaledBitmap = Bitmap.createScaledBitmap(tempBitmap, scaledCardW, scaledCardH, false);
+					tempCard.setBitmap(scaledBitmap);
+				}
+					oppDeck.add(tempCard);
+
 			}
 		}
 	}
+
+
 }
