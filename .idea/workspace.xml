@@ -43,11 +43,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="CaravanView.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="CaravanView.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/huntington/caravan/view/CaravanView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.178571">
-              <caret line="181" column="44" selection-start-line="181" selection-start-column="44" selection-end-line="181" selection-end-column="44" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="181" column="41" selection-start-line="181" selection-start-column="41" selection-end-line="181" selection-end-column="41" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -75,11 +75,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CaravanActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="CaravanActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/huntington/caravan/activity/CaravanActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5714286">
-              <caret line="49" column="86" selection-start-line="49" selection-start-column="20" selection-end-line="49" selection-end-column="86" />
+            <state vertical-scroll-proportion="-7.696429">
+              <caret line="45" column="86" selection-start-line="45" selection-start-column="86" selection-end-line="45" selection-end-column="86" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -1556,8 +1556,8 @@
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/huntington/caravan/activity/GameActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/huntington/caravan/player/ComputerPlayer.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/huntington/caravan/activity/CaravanActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/huntington/caravan/view/TitleView.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/huntington/caravan/activity/CaravanActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/huntington/caravan/view/CaravanView.java" />
       </list>
     </option>
@@ -2347,7 +2347,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -2533,16 +2533,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/huntington/caravan/view/CaravanView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.178571">
-          <caret line="181" column="44" selection-start-line="181" selection-start-column="44" selection-end-line="181" selection-end-column="44" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/huntington/caravan/view/TitleView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-5.767857">
@@ -2563,8 +2553,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/huntington/caravan/activity/CaravanActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5714286">
-          <caret line="49" column="86" selection-start-line="49" selection-start-column="20" selection-end-line="49" selection-end-column="86" />
+        <state vertical-scroll-proportion="-7.696429">
+          <caret line="45" column="86" selection-start-line="45" selection-start-column="86" selection-end-line="45" selection-end-column="86" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/huntington/caravan/view/CaravanView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="181" column="41" selection-start-line="181" selection-start-column="41" selection-end-line="181" selection-end-column="41" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

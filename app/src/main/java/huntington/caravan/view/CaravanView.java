@@ -179,8 +179,12 @@ public class CaravanView extends View {
 				calculateScore();
 				System.out.println(cp1Wins);
 				System.out.println(cp2Wins);
-				if(noninteractivegames==1000){
+				if(noninteractivegames==10){
+
 					double z = (cp1Wins - noninteractivegames/2)/Math.sqrt(noninteractivegames/2/2);
+					System.out.println(noninteractivegames+" games");
+					System.out.println("cp1 wins: "+cp1Wins);
+					System.out.println("cp2 wins "+cp2Wins);
 					System.out.println("Zscore= "+z);
 				}
 
